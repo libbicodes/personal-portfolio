@@ -1,0 +1,39 @@
+/* ============================================================
+   EFFECTS — borders, hard pixel shadows, radii, motion
+   The whole system is built on 3px ink outlines + hard
+   offset drop-shadows (no blur). Nothing is soft.
+   ============================================================ */
+
+:root {
+  /* ---- Border widths (always solid --ink) ---- */
+  --bw:     3px;    /* default chunky outline */
+  --bw-lg:  4px;    /* modal / window frames */
+  --bw-xl:  6px;    /* console / screen bezels */
+
+  /* ---- Radii (rounded but never pill-soft) ---- */
+  --r-sm:  6px;
+  --r-md:  10px;
+  --r-lg:  14px;
+  --r-xl:  18px;
+  --r-pill: 30px;   /* status pills, social chips */
+
+  /* ---- Hard pixel shadows (offset, zero blur, ink-colored) ---- */
+  --sh-sm:  2px 2px 0 var(--ink);
+  --sh:     5px 5px 0 var(--ink);
+  --sh-lg:  8px 8px 0 var(--ink);
+  --sh-xl:  12px 12px 0 var(--ink);
+
+  /* ---- Motion ---- */
+  --ease-pop:    cubic-bezier(.2, .9, .3, 1.2);   /* @kind other */
+  --ease-snap:   cubic-bezier(.16, .84, .3, 1);   /* @kind other */
+  --ease-glide:  cubic-bezier(.2, .7, .2, 1);     /* @kind other */
+  --dur-press:   .12s;   /* @kind other */
+  --dur-hover:   .2s;    /* @kind other */
+  --dur-reveal:  .8s;    /* @kind other */
+
+  /* ---- Press-pop transform pattern ----
+     hover:  translate(-3px,-3px) + shadow grows to --sh-lg
+     active: translate(3px,3px)  + shadow shrinks to --sh-sm */
+  --lift: translate(-3px, -3px);    /* @kind other */
+  --press: translate(3px, 3px);     /* @kind other */
+}
