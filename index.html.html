@@ -142,14 +142,25 @@
   .hero h1 .pop{color:var(--teal);position:relative;display:inline-block;animation:pop 2.6s ease-in-out infinite}
   @keyframes pop{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
   .reveal-line{display:block;overflow:hidden;padding-bottom:.1em}
-  .reveal-line>span{display:block;transform:translateY(110%);animation:lineUp .9s cubic-bezier(.16,.84,.3,1) forwards}
-  .reveal-line:nth-child(2)>span{animation-delay:.12s}
-  @keyframes lineUp{to{transform:translateY(0)}}
-  .hero-sub{display:flex;justify-content:space-between;align-items:flex-end;gap:36px;margin-top:30px;flex-wrap:wrap;opacity:0;animation:rise .8s ease .5s forwards}
+  /* Hero headline appears at its FINAL size/position \u2014 a gentle opacity fade with a
+     tiny rise (no big slide, no scale, no size change), revealed in sync with the
+     window once the Start transition adds #site.play. No late pop. */
+  .reveal-line>span{display:block;opacity:0;transform:translateY(9px)}
+  #site.play .reveal-line>span{animation:lineUp .55s cubic-bezier(.2,.7,.2,1) forwards}
+  #site.play .reveal-line:nth-child(2)>span{animation-delay:.08s}
+  @keyframes lineUp{to{opacity:1;transform:translateY(0)}}
+  .hero-sub{display:flex;justify-content:space-between;align-items:flex-end;gap:36px;margin-top:30px;flex-wrap:wrap;opacity:0}
+  #site.play .hero-sub{animation:rise .8s ease .5s forwards}
   .hero-statement{max-width:52ch;font-size:21px;color:var(--ink2)}
   .hero-statement b{color:var(--ink);font-family:var(--pixel);font-size:18px}
-  .hero-actions{display:flex;gap:14px;align-items:center;margin-top:34px;flex-wrap:wrap;opacity:0;animation:rise .8s ease .65s forwards}
+  .hero-actions{display:flex;gap:14px;align-items:center;margin-top:34px;flex-wrap:wrap;opacity:0}
+  #site.play .hero-actions{animation:rise .8s ease .65s forwards}
   @keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+  /* reduced motion: show the prepared hero text immediately, no slide/fade */
+  @media(prefers-reduced-motion:reduce){
+    .reveal-line>span{opacity:1!important;transform:none!important;animation:none!important}
+    .hero-sub,.hero-actions{opacity:1!important;animation:none!important}
+  }
 
   /* ---------- BOOT / START SCREEN ---------- */
   #boot{position:fixed;inset:0;z-index:11000;background:radial-gradient(120% 120% at 50% 18%,#9C78E6 0%,var(--purple) 55%,#5E40A8 100%);
@@ -581,7 +592,10 @@
   .piece{opacity:0;transform:translate(var(--fx,0),var(--fy,0)) rotate(var(--fr,0deg)) scale(var(--fs,1))}
   #site.play .piece{animation:assemble .72s cubic-bezier(.2,.9,.3,1.25) forwards;animation-delay:var(--ad,0s)}
   @keyframes assemble{to{opacity:1;transform:translate(0,0) rotate(var(--rr,0deg)) scale(1)}}
-  .hwin.piece{--fy:70px;--fs:.94;--ad:.05s}
+  /* Hero window: fade in with only a tiny rise \u2014 NO scale, so it never "grows"/pops
+     into final size after the page is visible. (The decorative doodles below keep
+     their own scale-in assemble; only the window itself is de-scaled.) */
+  .hwin.piece{--fy:18px;--fs:1;--ad:.05s}
   .d-star{--fx:-70px;--fy:-50px;--fr:-50deg;--fs:.4;--rr:-12deg;--ad:.28s}
   .d-spark{--fx:80px;--fy:-40px;--fr:60deg;--fs:.4;--rr:8deg;--ad:.40s}
   .d-heart{--fx:-60px;--fy:60px;--fr:-40deg;--fs:.4;--rr:-8deg;--ad:.34s}
@@ -679,6 +693,10 @@
   .hero-scan,.hero-lensfx{position:absolute;inset:0;overflow:hidden;border-radius:0 0 16px 16px;
     pointer-events:none}
   .hero-scan{z-index:1}
+  /* Revealed scanner widgets are visual-only background art: fully inert, never
+     hover/click/focus targets (they already inherit pointer-events:none from the
+     layer above — this makes the intent explicit and guards any future override). */
+  .hero-scan-field,.hero-scan-field .sw,.hero-scan-field .sw *{pointer-events:none}
   .hero-lensfx{z-index:6;transform:translateZ(60px)}
   /* keep the real copy above the reveal layer + readable */
   .hwin-body>.hero-kicker,.hwin-body>.hero-h1,.hwin-body>.hero-lead,.hwin-body>.hero-cta{
@@ -690,7 +708,14 @@
     -webkit-mask-image:radial-gradient(circle var(--r,0px) at var(--mx,50%) var(--my,50%),#000 58%,rgba(0,0,0,.35) 80%,transparent 100%);
             mask-image:radial-gradient(circle var(--r,0px) at var(--mx,50%) var(--my,50%),#000 58%,rgba(0,0,0,.35) 80%,transparent 100%)}
   .hwin.is-scanning .hero-scan-field{opacity:1}
-  .hwin.is-scanning .hwin-body{cursor:none}
+  /* The scanner lens REPLACES the cursor inside the hero window. Hide every cursor
+     across the whole window (bar + body + the real CTA links/buttons, which carry
+     their own custom pixel cursor) for the entire time the scanner system is enabled
+     on desktop — not just while actively scanning — so the normal floating/custom
+     cursor never appears, flickers, or "buffers" over the hidden revealed elements.
+     Only the lens reticle is ever visible in here. */
+  body.scan-ready .hero .hwin,
+  body.scan-ready .hero .hwin *{cursor:none !important}
 
   /* mini widget base — a tiny on-brand paper card, hard ink shadow, slight tilt */
   .sw{position:absolute;background:var(--card);border:3px solid var(--ink);border-radius:9px;
@@ -851,6 +876,25 @@
 </style>
 </head>
 <body>
+<template id="__bundler_thumbnail" data-bg-color="#5E40A8">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+    <rect width="1200" height="800" fill="#5E40A8"/>
+    <!-- pixel star -->
+    <g fill="#F5C842" stroke="#16140E" stroke-width="6">
+      <rect x="570" y="250" width="60" height="60"/>
+      <rect x="540" y="310" width="120" height="60"/>
+      <rect x="510" y="370" width="180" height="60"/>
+      <rect x="480" y="430" width="240" height="60"/>
+      <rect x="510" y="490" width="60" height="70"/>
+      <rect x="630" y="490" width="60" height="70"/>
+    </g>
+    <!-- LK monogram tile -->
+    <g transform="translate(540,580)">
+      <rect x="0" y="0" width="120" height="120" rx="14" fill="#F2913B" stroke="#16140E" stroke-width="8"/>
+      <text x="60" y="86" font-family="monospace" font-size="64" font-weight="700" fill="#16140E" text-anchor="middle">LK</text>
+    </g>
+  </svg>
+</template>
 <div id="progress"></div>
 
 <!-- BOOT / START SCREEN (repurposed "press start / are you ready") -->
@@ -989,7 +1033,7 @@
             <p class="hero-lead">Final-year IT student in Dubai building <b>data-informed digital products</b> — analytics, dashboards &amp; user-tested UX, with SQL, Python, Power BI, Figma &amp; a bit of AWS.</p>
             <div class="hero-cta">
               <a href="#work" class="btn3d"><span>▶ VIEW MY WORK</span></a>
-              <a href="mailto:laibakashif2015@gmail.com" class="btn3d ghost"><span>✉ EMAIL ME</span></a>
+              <a href="/cdn-cgi/l/email-protection#d0bcb1b9b2b1bbb1a3b8b9b6e2e0e1e590b7bdb1b9bcfeb3bfbd" class="btn3d ghost"><span>✉ EMAIL ME</span></a>
             </div>
           </div>
         </div>
@@ -1420,6 +1464,11 @@
        running and self-remove normally — otherwise frozen sprites never fire
        animationend, the trail's live-counter never decrements, and it stalls. */
     body.dt-zone #cursorTrail{ opacity:0 !important; pointer-events:none !important; }
+    /* Same protected-zone treatment for the hero scanner pane: inside it, only the
+       scanner reveal cursor is active \u2014 the floating icon trail is fully hidden so
+       it can never overlap, jitter, or fight the scanner. Opacity, not display:none,
+       for the same self-removal reason as above. */
+    body.hero-zone #cursorTrail{ opacity:0 !important; pointer-events:none !important; }
 
     /* ---------- responsive ---------- */
     @media (max-width:760px){
@@ -1438,7 +1487,7 @@
     }
   </style>
 
-  <script id="dt-script">
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script id="dt-script">
   (function(){
     "use strict";
     var screenEl = document.getElementById('dtScreen');
@@ -1710,7 +1759,7 @@
     </div>
     <div class="status reveal" style="margin:0 auto 0"><span class="pdot"></span>Open to junior data analyst, BI / product analytics &amp; UX/product internships</div>
     <h2 class="reveal">Let's make<br>something <span class="pop">loud.</span></h2>
-    <a href="mailto:laibakashif2015@gmail.com" class="btn btn-start reveal" style="font-size:19px">laibakashif2015@gmail.com →</a>
+    <a href="/cdn-cgi/l/email-protection#214d404843404a40524948471311101461464c40484d0f424e4c" class="btn btn-start reveal" style="font-size:19px"><span class="__cf_email__" data-cfemail="365a575f54575d57455e5f500406070376515b575f5a1855595b">[email&#160;protected]</span> →</a>
     <div class="socials reveal">
       <a href="https://www.linkedin.com/in/laiba-kashif" target="_blank" rel="noopener">LinkedIn ↗</a>
     </div>
@@ -1739,7 +1788,7 @@
 <!-- EXPERIENCE FLIP OVERLAY -->
 <div id="expBg"><div class="exp-card" id="expCard"></div></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const nav=document.getElementById('nav');
   addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
 
@@ -1871,24 +1920,31 @@
     document.body.classList.add('depth-enabled');     // turns on the CSS depth layer
     if(matchMedia('(prefers-reduced-motion:reduce)').matches||matchMedia('(pointer:coarse)').matches)return; // depth stays static, no live tilt
     const MAX=7;                                       // tilt amplitude (~intensity 3)
-    let trX=0,trY=0,rx=0,ry=0,spinning=false;
+    let trX=0,trY=0,rx=0,ry=0,spinning=false,running=false;
+    // Idle-aware loop: only paints while the tilt is actually settling toward its
+    // target. Once rx/ry reach trX/trY it STOPS scheduling frames — so a stationary
+    // cursor over the hero no longer repaints (and re-rasterizes the masked scanner
+    // field) every frame. Any pointer move/leave kicks it back to life.
+    function frame(){
+      rx+=(trX-rx)*0.09; ry+=(trY-ry)*0.09;
+      win.style.transform=`rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+      // chunky stepped two-tone shadow follows the lift (orange ledge + black drop)
+      win.style.boxShadow=`${Math.round(7-ry*0.5)}px ${Math.round(7+rx*0.5)}px 0 var(--orange),${Math.round(16-ry*0.9)}px ${Math.round(16+rx*0.9)}px 0 var(--ink)`;
+      if(Math.abs(trX-rx)>0.01||Math.abs(trY-ry)>0.01){requestAnimationFrame(frame);}
+      else{running=false;}
+    }
+    function kick(){if(spinning&&!running){running=true;requestAnimationFrame(frame);}}
     header.addEventListener('mousemove',e=>{
       const r=win.getBoundingClientRect();
       const px=Math.max(-1,Math.min(1,(e.clientX-(r.left+r.width/2))/(r.width/1.7)));
       const py=Math.max(-1,Math.min(1,(e.clientY-(r.top+r.height/2))/(r.height/1.7)));
-      trY=px*MAX; trX=-py*MAX;
+      trY=px*MAX; trX=-py*MAX; kick();
     },{passive:true});
-    header.addEventListener('mouseleave',()=>{trX=0;trY=0;});
+    header.addEventListener('mouseleave',()=>{trX=0;trY=0;kick();});
     function startSpin(){
       if(spinning)return; spinning=true;
       win.style.opacity='1';win.style.animation='none';win.style.transition='none'; // release entrance hold, keep visible, let rAF own transform
-      (function spin(){
-        rx+=(trX-rx)*0.09; ry+=(trY-ry)*0.09;
-        win.style.transform=`rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
-        // chunky stepped two-tone shadow follows the lift (orange ledge + black drop)
-        win.style.boxShadow=`${Math.round(7-ry*0.5)}px ${Math.round(7+rx*0.5)}px 0 var(--orange),${Math.round(16-ry*0.9)}px ${Math.round(16+rx*0.9)}px 0 var(--ink)`;
-        requestAnimationFrame(spin);
-      })();
+      kick();
     }
     // wait for the window's own assemble animation to finish before tilting
     function onEnd(e){if(e.target!==win)return;win.removeEventListener('animationend',onEnd);startSpin();}
@@ -1931,7 +1987,10 @@
       field.style.setProperty('--mx',cx.toFixed(1)+'px');
       field.style.setProperty('--my',cy.toFixed(1)+'px');
       field.style.setProperty('--r',cr.toFixed(1)+'px');
-      if(active||Math.abs(tr-cr)>0.4||Math.abs(tx-cx)>0.4||Math.abs(ty-cy)>0.4){
+      // Idle when settled (even while still active/hovering) so a stationary cursor
+      // doesn't keep a permanent rAF running over the revealed widgets = no buffering.
+      // move()/leave() restart the loop whenever there's new motion to animate.
+      if(Math.abs(tr-cr)>0.4||Math.abs(tx-cx)>0.4||Math.abs(ty-cy)>0.4){
         raf=requestAnimationFrame(tick);
       }else{raf=0;}
     }
@@ -1984,14 +2043,32 @@
     const MAX=8; let live=0;
     let lx=0,ly=0,lt=0,have=false;
 
+    // ----- Hero scanner = a PROTECTED "no floating trail zone" (like the Toolkit TV).
+    // The whole hero window (title bar + body, + a generous margin to cover the 3D
+    // pop-up tilt) is treated as off-limits so the floating icon trail can never
+    // spawn, overlap, or fight the scanner reveal cursor. Rect is cached and only
+    // re-measured at most every 250ms (self-heals after the Start assemble / scroll),
+    // so we never force a layout read on every raw mousemove = no jitter/buffering. */
+    const heroWin=document.querySelector('.hero .hwin');
+    let hz=null,hzT=-1e9;
+    function heroZoneRect(){
+      const now=performance.now();
+      if(heroWin&&(now-hzT>250)){
+        const r=heroWin.getBoundingClientRect();
+        hz={l:r.left-24,t:r.top-24,r:r.right+24,b:r.bottom+24}; hzT=now;
+      }
+      return hz;
+    }
+    function isInsideHeroScannerZone(x,y){
+      const z=heroZoneRect(); if(!z)return false;
+      return x>=z.l&&x<=z.r&&y>=z.t&&y<=z.b;
+    }
+
     // don't spawn over: the boot screen, the nav band, or the hero scanner pane
     function blocked(x,y){
       if(boot&&!boot.classList.contains('go'))return true;
       if(y<96)return true;
-      const hb=document.querySelector('.hwin-body');
-      if(hb){const r=hb.getBoundingClientRect();
-        if(x>=r.left-6&&x<=r.right+6&&y>=r.top-6&&y<=r.bottom+6)return true;}
-      return false;
+      return isInsideHeroScannerZone(x,y);
     }
     function spawn(x,y,o){
       if(live>=MAX)return;
@@ -2014,6 +2091,12 @@
     }
     addEventListener('mousemove',function(e){
       const x=e.clientX,y=e.clientY;
+      // Protected zone: while the pointer is inside the hero scanner pane, hide the
+      // whole trail layer (sprites already in flight fade out normally) and skip all
+      // spawning. The flag clears the instant the pointer leaves — trail resumes.
+      const inHero=isInsideHeroScannerZone(x,y);
+      if(inHero!==document.body.classList.contains('hero-zone'))
+        document.body.classList.toggle('hero-zone',inHero);
       if(!have){lx=x;ly=y;have=true;return;}
       const now=performance.now();
       if(Math.hypot(x-lx,y-ly)<22||now-lt<68)return;                  // throttle: distance + time
@@ -2072,11 +2155,15 @@
     // -- existing sprite + doodle parallax layers (unchanged) --
     const layers=[...document.querySelectorAll('header .sky .stk')].map((el,i)=>({el,d:(i%2?-1:1)*(0.12+0.06*i)}));
     const deco=[...document.querySelectorAll('.doodle[data-par]')].map(el=>({el,d:parseFloat(el.dataset.par||'2')*0.05}));
-    let mx=0,my=0,tx=0,ty=0,sc=0;
+    let mx=0,my=0,tx=0,ty=0,sc=0,running=false,lastSc=NaN;
+    function kick(){if(!running){running=true;requestAnimationFrame(loop);}}
     if(!reduce){
-      addEventListener('mousemove',e=>{tx=(e.clientX/innerWidth-.5);ty=(e.clientY/innerHeight-.5);},{passive:true});
+      addEventListener('mousemove',e=>{tx=(e.clientX/innerWidth-.5);ty=(e.clientY/innerHeight-.5);kick();},{passive:true});
     }
-    addEventListener('scroll',()=>{sc=scrollY;},{passive:true});
+    addEventListener('scroll',()=>{sc=scrollY;kick();},{passive:true});
+    // Idle-aware: parallax only repaints while the pointer/scroll are still settling.
+    // Once everything has converged it stops scheduling frames instead of running a
+    // permanent rAF \u2014 a stationary cursor produces zero parallax repaint work.
     function loop(){
       var EN=window.__lkEnergy||1;
       mx+=(tx-mx)*0.06; my+=(ty-my)*0.06;
@@ -2086,9 +2173,10 @@
       bits.forEach(b=>{b.el.style.translate=`${(mx*22*b.d*EN).toFixed(1)}px ${(my*20*b.d*EN+sc*b.d*0.18).toFixed(1)}px`;});
       layers.forEach(l=>{l.el.style.translate=`${mx*40*l.d*EN}px ${my*34*l.d*EN + sc*l.d*0.25}px`;});
       deco.forEach(l=>{l.el.style.translate=`${mx*-26*EN}px ${my*-20*EN + sc*l.d}px`;});
-      requestAnimationFrame(loop);
+      if(Math.abs(tx-mx)>0.0008||Math.abs(ty-my)>0.0008||sc!==lastSc){lastSc=sc;requestAnimationFrame(loop);}
+      else{running=false;}
     }
-    requestAnimationFrame(loop);
+    kick();
   })();
 
   const EXP={
