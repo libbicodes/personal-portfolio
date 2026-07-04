@@ -296,10 +296,10 @@
   .m-body h4.c2::before{background:var(--orange)} .m-body h4.c3::before{background:var(--purple)} .m-body h4.c4::before{background:var(--rose)}
   .m-body p{font-family:var(--mono);font-size:19px;color:var(--ink2);margin-bottom:6px}
   .m-body h4:first-child{margin-top:0}
-  .m-imgs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
-  .m-imgs .ph{aspect-ratio:4/3;background:var(--bg2);border:3px dashed var(--ink);border-radius:9px;display:flex;align-items:center;justify-content:center;
+  .m-imgs{display:grid;grid-template-columns:repeat(var(--cols,2),1fr);gap:14px;margin-top:20px}
+  .m-imgs .ph{aspect-ratio:var(--ar,4/3);background:var(--bg2);border:3px dashed var(--ink);border-radius:9px;display:flex;align-items:center;justify-content:center;
     font-family:var(--mono);font-size:16px;color:var(--ink2);text-align:center;padding:10px}
-  .m-imgs img{width:100%;aspect-ratio:4/3;object-fit:contain;background:var(--bg2);border:3px solid var(--ink);border-radius:9px;display:block}
+  .m-imgs img{width:100%;aspect-ratio:var(--ar,4/3);object-fit:cover;object-position:top;background:var(--bg2);border:3px solid var(--ink);border-radius:9px;display:block}
   .m-repo{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-family:var(--pixel);font-size:13px;
     background:var(--yellow);border:3px solid var(--ink);border-radius:8px;padding:8px 14px;box-shadow:3px 3px 0 var(--ink);
     transition:transform .14s,box-shadow .14s}
@@ -1051,7 +1051,7 @@
             <p class="hero-lead">Final-year IT student in Dubai building <b>data-informed digital products</b> — analytics, dashboards &amp; user-tested UX, with SQL, Python, Power BI, Figma &amp; a bit of AWS.</p>
             <div class="hero-cta">
               <a href="#work" class="btn3d"><span>▶ VIEW MY WORK</span></a>
-              <a href="/cdn-cgi/l/email-protection#117d707873707a70627978772321202451767c70787d3f727e7c" class="btn3d ghost"><span>✉ EMAIL ME</span></a>
+              <a href="/cdn-cgi/l/email-protection#422e232b20232923312a2b247072737702252f232b2e6c212d2f" class="btn3d ghost"><span>✉ EMAIL ME</span></a>
             </div>
           </div>
         </div>
@@ -1764,7 +1764,7 @@
     </div>
     <div class="status reveal" style="margin:0 auto 0"><span class="pdot"></span>Open to junior data analyst, BI / product analytics &amp; UX/product internships</div>
     <h2 class="reveal">Let's make<br>something <span class="pop">loud.</span></h2>
-    <a href="/cdn-cgi/l/email-protection#e488858d86858f85978c8d82d6d4d5d1a48389858d88ca878b89" class="btn btn-start reveal" style="font-size:19px"><span class="__cf_email__" data-cfemail="305c515952515b51435859560200010570575d51595c1e535f5d">[email&#160;protected]</span> →</a>
+    <a href="/cdn-cgi/l/email-protection#1e727f777c7f757f6d7677782c2e2f2b5e79737f7772307d7173" class="btn btn-start reveal" style="font-size:19px"><span class="__cf_email__" data-cfemail="127e737b70737973617a7b742022232752757f737b7e3c717d7f">[email&#160;protected]</span> →</a>
     <div class="socials reveal">
       <a href="https://www.linkedin.com/in/laiba-kashif" target="_blank" rel="noopener">LinkedIn ↗</a>
     </div>
@@ -1836,7 +1836,7 @@
       process:'I cleaned and transformed raw job-posting data with Python and pandas, extracted relevant skills, designed a normalised job-skills structure, loaded it into SQLite, wrote SQL queries for analysis, and built a four-page Power BI dashboard covering market overview, skill demand, entry-level experience expectations and candidate skill gaps.',
       outcome:'The dashboard highlights regional skill-demand patterns across UAE and Canada postings — including demand for SQL, Excel, Python, Power BI, reporting, dashboarding, stakeholder communication and documentation — and shows that some junior/entry-level roles still ask for 2+ years of experience. Outputs include cleaned datasets, a normalised job-skills table, a SQLite database, SQL queries, the dashboard, an executive summary and methodology docs.',
       shows:'Data cleaning, analytical thinking, SQL, dashboarding, Power BI reporting, methodology documentation, and turning messy job-market data into stakeholder-friendly insight.',
-      imgs:['images/skill-1.png','images/skill-2.png'],repo:'https://github.com/libbicodes/skillmap-uae-canada-job-market',
+      imgs:['images/skill-1.png','images/skill-2.png'],imgCols:2,imgAr:'969/540',repo:'https://github.com/libbicodes/skillmap-uae-canada-job-market',
       tags:'Python · pandas · SQL · SQLite · Power BI · Data Cleaning · Dashboarding'},
     code:{title:'CodeQuest',cat:'Product / Web App · EdTech',role:'Frontend, UI/UX & Product Docs Contributor',year:'May–Nov 2025',tools:'React, Vite, Express, Firebase, Firestore, Judge0, Figma',
       overview:'A full-stack gamified web platform that turns Python debugging practice into a game — interactive challenges, quizzes, XP progression, badges, leaderboards, Code Clinic sessions and a final Boss Battle mode. Built by a team across a seven-month lifecycle. Associated with Curtin University Dubai.',
@@ -1844,6 +1844,8 @@
       process:'The project moved from product planning, requirements analysis, technical investigation and system design into frontend development, backend integration, testing, deployment and final handover.',
       outcome:'My contribution spanned frontend development, UI/UX design, product documentation and database planning. As part of the frontend team I designed and developed selected user-facing screens, helped shape the learning flow, and translated the UI/UX direction into a React interface. I also contributed to requirements, feature structure, technical documentation and Firestore data planning for users, challenges, attempts, badges, sessions and progress. The final product used React, Vite, Express, Firebase Authentication, Cloud Firestore, the Judge0 API, Vercel and Render. Supporting materials are available on request.',
       shows:'Product thinking, UI/UX, frontend development, requirements analysis, technical documentation, database planning and collaboration across the product lifecycle.',
+      imgs:['images/code-1.png','images/code-2.png'],imgCols:2,imgAr:'1150/602',
+      repo:'https://dubai-t3-team-3-udxi.vercel.app/',repoLabel:'▸ Visit the live site — click me! ↗',
       tags:'React · Firebase · Firestore · UI/UX · Product Docs · Requirements'},
     skin:{title:'SkinMatch',cat:'UX Case Study · Mobile App',role:'UX Research, Requirements & Prototype Evaluation',year:'May–Aug 2024',tools:'Figma, UX Research, Personas, Usability Testing',
       overview:'A mobile app prototype designed to help users discover skincare products, routines and similar skin-profile communities based on their personal skin needs. A UX case study and prototype, not a launched product. Associated with Curtin University Dubai.',
@@ -1851,6 +1853,8 @@
       process:'I worked across UX research, product requirements and prototype evaluation: identifying user pain points, developing personas, defining functional and non-functional requirements, planning usability testing, gathering feedback, and supporting the Figma prototype from wireframes through to high-fidelity screens.',
       outcome:'The project produced a high-fidelity Figma prototype and click-through workflow for the personalised skincare-discovery experience — onboarding, product matching, reviews and user-focused navigation.',
       shows:'User-centered design, UX research, personas, requirements analysis, usability testing, prototyping and UX documentation.',
+      imgs:['images/skin-1.png','images/skin-2.png'],imgCols:2,imgAr:'876/486',
+      repo:'https://drive.google.com/file/d/10eN1FXRWDjP9YThKw2p22M25Uzphzbyu/view?usp=sharing',repoLabel:'▸ View the full case study report ↗',
       tags:'Figma · UX Research · Personas · Usability Testing · Prototype'},
     nimbus:{title:'Nimbus Systems',cat:'Cloud / Infrastructure · Systems',role:'AWS Infrastructure Deployment & Documentation',year:'May–Aug 2024',tools:'AWS VPC, IAM, EC2, EBS, RDS, CloudWatch, ELB, Auto Scaling, Python',
       overview:'A cloud infrastructure deployment project for a gaming-focused company scenario, built in a university-provided AWS cloud lab. Supporting technical evidence — not a cloud-engineering focus. Associated with Curtin University Dubai.',
@@ -1858,6 +1862,7 @@
       process:'I worked hands-on with AWS VPC, IAM, EC2, EBS, RDS, CloudWatch, Elastic Load Balancing and Auto Scaling — creating a custom VPC, public/private subnets, route tables, internet/NAT gateways, security groups, an EC2 web server, an RDS database, load balancing and auto-scaling policies. I prepared a monthly cost estimate and documented the build with screenshots and testing evidence. A Python cloud lab added work in AWS Cloud9 and CodeWhisperer to write, test, debug and run an email-validation script.',
       outcome:'The final output was a documented AWS infrastructure report with configuration screenshots, testing evidence and cost estimation.',
       shows:'Cloud fundamentals, AWS infrastructure, networking, access control, monitoring, scalability, cost estimation, Python scripting, AI-assisted coding and technical documentation.',
+      repo:'https://drive.google.com/file/d/1UX2dmuKud_FxQKKoYzjOIPrGTgCaH4-H/view?usp=sharing',repoLabel:'▸ View the implementation report ↗',
       tags:'AWS · VPC · EC2 · RDS · IAM · CloudWatch · Python'},
     solar:{title:'Solcellespesialisten',cat:'Product Team · UI/UX',role:'Product Team Intern',year:'Aug–Oct 2024',tools:'Figma, Usability Testing, UAT, Process Flows, Documentation',
       overview:'A remote product-team internship (Norway) spanning UI/UX design, web support, product testing, documentation and research.',
@@ -1893,8 +1898,8 @@
       '<h4 class="c4">Outcome</h4><p>'+d.outcome+'</p>'+
       '<h4 class="c2">What this shows</h4><p>'+d.shows+'</p>'+
       '<div class="m-tags">'+d.tags.split(' · ').map(function(t){return '<span>'+t+'</span>';}).join('')+'</div>'+
-      '<div class="m-imgs">'+(d.imgs?d.imgs.map(function(src){return '<img src="'+src+'" alt="'+d.title+' screenshot">';}).join(''):'<div class="ph">Add project image →<br>images/'+key+'-1.jpg</div><div class="ph">Add project image →<br>images/'+key+'-2.jpg</div>')+'</div>'+
-      (d.repo?'<a class="m-repo" href="'+d.repo+'" target="_blank" rel="noopener">▸ View the repo — click me! ↗</a>':'');
+      (d.imgs?'<div class="m-imgs" style="--cols:'+(d.imgCols||2)+';--ar:'+(d.imgAr||'4/3')+'">'+d.imgs.map(function(src){return '<img src="'+src+'" alt="'+d.title+' screenshot">';}).join('')+'</div>':'')+
+      (d.repo?'<a class="m-repo" href="'+d.repo+'" target="_blank" rel="noopener">'+(d.repoLabel||'▸ View the repo — click me! ↗')+'</a>':'');
     mb.classList.add('open');document.body.style.overflow='hidden';
   }
   function closeModal(){mb.classList.remove('open');document.body.style.overflow='';}
