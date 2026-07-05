@@ -2,7 +2,7 @@
 
 Personal portfolio site for Laiba Kashif, a final-year B.Sc. Information Technology student (Curtin University Dubai) working across data analytics, BI and UX/product design.
 
-**Live site:** [add your Vercel URL here]
+**Live site:** [https://personal-portfolio-libbi.vercel.app/]
 
 ## About
 
