@@ -1,16 +1,16 @@
 # Laiba Kashif — Portfolio
 
-Personal portfolio site for Laiba Kashif, a final-year B.Sc. Information Technology student (Curtin University Dubai) working across data analytics, BI and UX/product design.
+I'm Laiba, a final-year B.Sc. Information Technology student (Curtin University Dubai) working across data analytics, BI and UX/product design. This is my personal portfolio site.
 
-**Live site:** [https://personal-portfolio-libbi.vercel.app/]
+**Live site:** https://personal-portfolio-libbi.vercel.app/
 
 ## About
 
 A single self-contained `index.html` — a retro pixel-arcade themed portfolio covering:
 - **Works** — SkillMap (data analytics/BI), CodeQuest (product/web app), SkinMatch (UX case study), Nimbus Systems (cloud/AWS)
-- **Experience** — internships and university roles
-- **About** — background across data, product and UX
-- **Toolkit** — tools and technologies used day-to-day
+- **Experience** — my internships and university roles
+- **About** — my background across data, product and UX
+- **Toolkit** — tools and technologies I reach for day-to-day
 - **Recognition** — awards, hackathons and certifications
 
 ## Tech
@@ -27,4 +27,4 @@ Deployed on [Vercel](https://vercel.com)
 
 ## Contact
 
-[laibakashif2015@gmail.com](mailto:laibakashif2015@gmail.com) · [LinkedIn](https://www.linkedin.com/in/laiba-kashif)
+📧 [laibakashif2015@gmail.com](mailto:laibakashif2015@gmail.com) · 🔗 [LinkedIn](https://www.linkedin.com/in/laiba-kashif)
